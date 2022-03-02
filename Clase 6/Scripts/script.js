@@ -1,7 +1,7 @@
 //Constructor de los pokemon
 class Pokemon {
-    constructor(nombre,index, HP, AT, DEF, SPA, SPDEF, SPD, tipo1, tipo2) {
-        this.nombre = nombre;
+    constructor(name,index, HP, AT, DEF, SPA, SPDEF, SPD, type1, type2) {
+        this.name = name;
         this.index =index;
         this.HP = HP;
         this.AT = AT;
@@ -9,11 +9,14 @@ class Pokemon {
         this.SPA = SPA;
         this.SPDEF = SPDEF;
         this.SPD = SPD;
-        this.tipo1 = tipo1;
-        this.tipo2 = tipo2;
+        this.type1 = type1;
+        this.type2 = type2;
     }
 }
+
+
 //Pokemon en forma de objetos
+
 let Bulbasaur = new Pokemon('Bulbasaur',1, 294,216,216,251,251,207,'Planta','Veneno');
 
 let Ivysaur = new Pokemon('Ivysaur',2, 324,245,247,284,284,240,'Planta','Veneno');
@@ -48,21 +51,18 @@ let nivel
 let potencia
 let efectividad
 let stab = 1
-var pokemons
-let choosing =prompt('Elige un pokemon atacante' + pokemons);
-
-pokedex.forEach (Pokemon =>console.log(Pokemon.name))
-    
-
-
-switch (choosing) {
-    default:
-        console.log('Por favor, elige un pokemon de la lista')
-    case Pokemon:
-        ataque = Pokemon.AT
-        defensa = Pokemon.SPDEF
-        break;
+let ataque
+let defensa
+let choosing =prompt('Elige un pokemon atacante: ' + pokedex.map(Pokemon=>Pokemon.name +' '));
+let pokedexFilter = pokedex.filter(Pokemon =>{
+    Pokemon.name == choosing
+});
+if (pokedexFilter.length == 0){
+    console.log('Por favor, elige un pokemon de la lista')
+} else{
+    ataque = pokedexFilter[0].Pokemon.AT
 }
+
 
 /*
 nivel = parseInt(prompt('Por favor, elige el nivel de tu Pokemon'))
