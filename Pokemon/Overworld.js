@@ -3,48 +3,47 @@ class Overworld{
         this.element = config.element;
         this.canvas = this.element.querySelector('.gameCanvas');
         this.context = this.canvas.getContext('2d');
+        this.map = null
     }
+
+ startGameLoop(){
+     const step = () =>{
+         //Limpiar en cada frame
+        this.context.clearRect(0,0, this.canvas.width, this.canvas.height)       
+
+        //Inicializar cámara
+        const fixedCamera = this.map.gameObjects.protag;
+        Object.values(this.map.gameObjects).forEach(object =>{
+            object.update({
+                arrow: this.movementCommand.direction,
+                map:this.map,
+        })
+    })
+
+        //Inicializar las diferentes imágenes
+         this.map.drawLowerImage(this.context,fixedCamera);
+
+         Object.values(this.map.gameObjects).forEach(object =>{
+            object.sprite.draw(this.context, fixedCamera);
+             })
+            
+        
+
+        this.map.drawUpperImage(this.context, fixedCamera);
+
+         
+        requestAnimationFrame(() =>{
+            step();
+        })
+     }
+     step();
+ }
     init(){
-       const image = new Image();
-       image.onload = () =>{
-           this.context.drawImage(image,0,0)
-       };
-       image.src = '/Images/Lab.png';
+        this.map = new OverworldMap(window.OverworldMaps.myHouseUpper);
+        console.log(this.map.walls)
+        this.movementCommand = new movementCommand();
+        this.movementCommand.init();
 
-       const x = 5;
-       const y = 6;
-       
-       const shadow = new Image();
-       shadow.onload = () =>{
-           this.context.drawImage(
-               shadow, //Imágen a pintar
-               0, //posicionamiento inicial desde la izquierda
-               0, //posicionamiento inicial desde arriba
-               32, //ancho del corte
-               32, //alto del corte
-                x*16 -8,//posicionamiento final en el eje x
-                y*16 -18,//posicionamiento final en el eje y
-                32,//tamaño a lo ancho
-               32) //tamaño a lo alto
-       };
-       shadow.src = '/Images/shadow.png'
-
-       const protag = new Image();
-       protag.onload = () =>{
-           this.context.drawImage(
-               protag, //Imágen a pintar
-               0, //posicionamiento inicial desde la izquierda
-               0, //posicionamiento inicial desde arriba
-               32, //ancho del corte
-               32, //alto del corte
-                x*16 -8,//posicionamiento final en el eje x
-                y*16 -18,//posicionamiento final en el eje y
-                32,//tamaño a lo ancho
-               32) //tamaño a lo alto
-       };
-       protag.src = '/Images/dolape.png'
-    
-}
-
-    
+  this.startGameLoop();
+    }
 }
